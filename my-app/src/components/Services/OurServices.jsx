@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import ServiceCards from "./ServiceCards";
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import api2 from "../../config/axiosApi2Config";
+import api from "../../config/axiosConfig";
 
 const OurServices = () => {
   const [mostrarFormulario, setMostrarFormulario] = useState(false);
@@ -115,7 +115,7 @@ const generatePDF = (user) => {
     }
 
     try {
-      const { data } = await api2.get(`solicitaServicio/estado/${user.cod_persona}`);
+      const { data } = await api.get(`solicitaServicio/estado/${user.cod_persona}`);
 
       console.log("Estado recibido desde backend:", data.estado);
 
@@ -127,7 +127,7 @@ const generatePDF = (user) => {
         setDatosServicio(data); // guardamos para usar id_servicio
 
         // Obtener testigos por id_servicio
-        const { data: testigosData } = await api2.get(`detalleServicio/testigos/${data.id_servicio}`);
+        const { data: testigosData } = await api.get(`detalleServicio/testigos/${data.id_servicio}`);
 
         setTestigos(testigosData);
       } else {

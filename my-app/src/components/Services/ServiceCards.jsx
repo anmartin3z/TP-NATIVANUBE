@@ -1,6 +1,5 @@
 // Services/ServiceCards.jsx
 import React, { useState } from "react";
-import api2 from "../../config/axiosApi2Config";
 import api from "../../config/axiosConfig";
 
 const ServiceCards = () => {
@@ -90,7 +89,7 @@ const ServiceCards = () => {
         cod_user_aprueba: null,
       };
 
-      const servicioResponse = await api2.post("solicitaServicio", bodyServicio);
+      const servicioResponse = await api.post("solicitaServicio", bodyServicio);
 
       console.log("Servicio registrado correctamente:", servicioResponse.data);
 
@@ -100,7 +99,7 @@ const ServiceCards = () => {
       // Insertar cada testigo en Detalle_Servicio
       const testigos = [formData.cedula_1, formData.cedula_2];
 
-      await api2.post("/detalleServicio", {
+      await api.post("/detalleServicio", {
         id_persona: usuario.cod_persona,
         servicio_id: servicioId,
         testigos: testigos,
@@ -129,8 +128,8 @@ const ServiceCards = () => {
 
     for (let cedula of cedulas) {
       try {
-        const res = await fetch(`/api/usuario/${cedula}`);
-        const data = await res.json();
+        const res = await api.get(`/usuario/${cedula}`);
+        const data = await res.data;
         nombres.push(data.nombre || "No disponible");
       } catch {
         nombres.push("Error");
