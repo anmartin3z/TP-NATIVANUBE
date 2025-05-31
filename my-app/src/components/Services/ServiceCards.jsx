@@ -33,10 +33,12 @@ const ServiceCards = () => {
     if (currentStep === 0) {
       const testigosValidos = await validarTestigos();
       if (!testigosValidos) return;
-      await insertarServicio();
-      await obtenerNombresTestigos();
-        // Ocultar formulario
-      setMostrarFormulario(false);
+      const success = await insertarServicio();
+      if(success){
+        await obtenerNombresTestigos();
+          // Ocultar formulario
+        setMostrarFormulario(false);
+      }
       return; // Detener navegación al siguiente paso
     }
 
@@ -76,14 +78,9 @@ const ServiceCards = () => {
       return;
     }
 
-    const fechaSolicitud = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-
     try {
       const bodyServicio = {
         persona: usuario.cod_persona,
-        fecha_solicitud: fechaSolicitud,
-        fecha_aprovacion: null, // Ajusta según el flujo de negocio
-        fecha_vencimiento: null,
         estado: "P",
         motivo: formData.motivo,
         cod_user_aprueba: null,
@@ -105,8 +102,7 @@ const ServiceCards = () => {
         testigos: testigos,
       });
 
-      
-
+      return true;
       //alert("Servicio registrado exitosamente.");
     } catch (error) {
       console.error("Error al insertar en la tabla servicio:", {
@@ -119,6 +115,7 @@ const ServiceCards = () => {
           error.response?.data?.error || error.message || "Sin mensaje del servidor"
         }`
       );
+      return false;
     }
   };
 
