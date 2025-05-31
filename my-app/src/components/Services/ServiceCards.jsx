@@ -38,6 +38,7 @@ const ServiceCards = () => {
         await obtenerNombresTestigos();
           // Ocultar formulario
         setMostrarFormulario(false);
+        window.location.reload();
       }
       return; // Detener navegación al siguiente paso
     }
@@ -83,7 +84,7 @@ const ServiceCards = () => {
         persona: usuario.cod_persona,
         estado: "P",
         motivo: formData.motivo,
-        cod_user_aprueba: null,
+        cod_user_aprueba: null
       };
 
       const servicioResponse = await api.post("solicitaServicio", bodyServicio);
@@ -126,7 +127,7 @@ const ServiceCards = () => {
     for (let cedula of cedulas) {
       try {
         const res = await api.get(`/usuario/${cedula}`);
-        const data = await res.data;
+        const data = await res.json();
         nombres.push(data.nombre || "No disponible");
       } catch {
         nombres.push("Error");
